@@ -14,11 +14,9 @@
         function Sync(selector, audioSelector) {
             var modelViewer = document.querySelector(selector);
             var sound = document.querySelector(audioSelector);
-            var playRequest = document.querySelector("#overlay");
 
             sound.addEventListener("timeupdate", () => {
                 modelViewer.currentTime = sound.currentTime;
-                console.log("modelViewer time: " + modelViewer.currentTime);
             });
 
             sound.addEventListener("pause", () => {
@@ -27,8 +25,6 @@
 
             sound.addEventListener("play", () => {
                 modelViewer.play();
-
-                playRequest.classList.add("hide");
             });
 
             document.addEventListener("visibilitychange", () => {
@@ -37,40 +33,6 @@
                 }
             });
 
-            // var promise = sound.play();
-            // if (promise !== undefined) {
-            //     promise
-            //         .then(_ => {
-            //             playRequest.classList.add("hide");
-            //         })
-            //         .catch(error => {
-            //             // show the modal dialogue to play this
-            //             playRequest.classList.remove("hide");
-            //         });
-            // }
-
-            // this is needed because modelViewer.currentTime does not update when paused
-            // https://github.com/google/model-viewer/issues/1113
-            function enforceTime() {
-                if (modelViewer === undefined)
-                    modelViewer = document.querySelector(selector);
-
-                // need to enforce play
-                if (!sound.paused && modelViewer.paused && typeof modelViewer.play === "function")
-                    modelViewer.play();
-
-                requestAnimationFrame(enforceTime);
-            }
-
-            requestAnimationFrame(enforceTime);
-        }
-
-        function playNow() {
-            var playRequest = document.querySelector("#overlay");
-            playRequest.classList.add("hide");
-
-            var sound = document.querySelector("#sound");
-            sound.play();
         }
 
     </script>
@@ -82,12 +44,8 @@
             alt="A 3D model of a penguin" background-color="#70BCD1" shadow-intensity="1" camera-controls
             interaction-prompt="auto" reveal="interaction" auto-rotate magic-leap id="model-viewer"
             data-js-focus-visible ar-status="not-presenting">
-            <div id="overlay" class="show hide">
-                <div id="request-press-play">
-                    <div id="lazy-load-poster" slot="poster"></div>
-                    <div id="button-load" slot="poster">Load 3D Model></div>
-                </div>
-            </div>
+            <div id="lazy-load-poster" slot="poster"></div>
+            <div id="button-load" slot="poster">Load 3D Model></div>
         </model-viewer>
         <section class="attribution">
             <div>
