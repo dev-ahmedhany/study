@@ -10,6 +10,7 @@
 
 <body>
     <script>
+
         function Sync(selector, audioSelector) {
             var modelViewer = document.querySelector(selector);
             var sound = document.querySelector(audioSelector);
@@ -79,13 +80,12 @@
             src="https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2Fmodel.glb?sound=https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2FPenguin_Emperor_Unisex_Adult.ogg&amp;link=https://prefrontalcortex.de"
             ios-src="https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2FPinguinRealComp.reality?v=1580297181648"
             alt="A 3D model of a penguin" background-color="#70BCD1" shadow-intensity="1" camera-controls
-            interaction-prompt="auto" reveal="interaction" auto-rotate autoplay magic-leap id="model-viewer"
+            interaction-prompt="auto" reveal="interaction" auto-rotate magic-leap id="model-viewer"
             data-js-focus-visible ar-status="not-presenting">
             <div id="overlay" class="show hide">
                 <div id="request-press-play">
                     <div id="lazy-load-poster" slot="poster"></div>
-                    <button onclick="playNow()" id="button-load" slot="poster">Load 3D Model>
-                    </button>
+                    <div id="button-load" slot="poster">Load 3D Model></div>
                 </div>
             </div>
         </model-viewer>
