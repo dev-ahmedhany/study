@@ -73,13 +73,6 @@
         }
 
     </script>
-    <div id="overlay" class="show hide">
-        <div id="request-press-play">
-            <button onclick="playNow()">
-                Start Audio Playback<br>(needs user interaction)
-            </button>
-        </div>
-    </div>
     <div id="card">
         <!-- All you need to put beautiful, interactive 3D content on your site: -->
         <model-viewer
@@ -88,6 +81,13 @@
             alt="A 3D model of a penguin" background-color="#70BCD1" shadow-intensity="1" camera-controls
             interaction-prompt="auto" reveal="interaction" auto-rotate autoplay magic-leap id="model-viewer"
             data-js-focus-visible ar-status="not-presenting">
+            <div id="overlay" class="show hide">
+                <div id="request-press-play">
+                    <div id="lazy-load-poster" slot="poster"></div>
+                    <button onclick="playNow()" id="button-load" slot="poster">Load 3D Model>
+                    </button>
+                </div>
+            </div>
         </model-viewer>
         <section class="attribution">
             <div>
