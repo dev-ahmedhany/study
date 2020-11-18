@@ -8,14 +8,132 @@
 </head>
 
 <body>
+    <script>
+        function Sync(selector, audioSelector) {
+            var modelViewer = document.querySelector(selector);
+            var sound = document.querySelector(audioSelector);
+            var playRequest = document.querySelector("#overlay");
+
+            sound.addEventListener("timeupdate", () => {
+                modelViewer.currentTime = sound.currentTime;
+                console.log("modelViewer time: " + modelViewer.currentTime);
+            });
+
+            sound.addEventListener("pause", () => {
+                modelViewer.pause();
+            });
+
+            sound.addEventListener("play", () => {
+                modelViewer.play();
+
+                playRequest.classList.add("hide");
+            });
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState !== "visible") {
+                    sound.pause();
+                }
+            });
+
+            var promise = sound.play();
+            if (promise !== undefined) {
+                promise
+                    .then(_ => {
+                        console.log("Autoplay has worked");
+                        playRequest.classList.add("hide");
+                    })
+                    .catch(error => {
+                        // Show a "Play" button so that user can start playback.
+                        console.log("Autoplay has not worked");
+
+                        // show the modal dialogue to play this
+                        playRequest.classList.remove("hide");
+                    });
+            }
+
+            // this is needed because modelViewer.currentTime does not update when paused
+            // https://github.com/google/model-viewer/issues/1113
+            function enforceTime() {
+                if (modelViewer === undefined)
+                    modelViewer = document.querySelector(selector);
+
+                if (sound.paused) modelViewer.currentTime = sound.currentTime;
+
+                // need to enforce play
+                if (modelViewer.paused && typeof modelViewer.play === "function")
+                    modelViewer.play();
+
+                requestAnimationFrame(enforceTime);
+            }
+
+            requestAnimationFrame(enforceTime);
+        }
+
+        function playNow() {
+            var playRequest = document.querySelector("#overlay");
+            playRequest.classList.add("hide");
+
+            var sound = document.querySelector("#sound");
+            sound.play();
+        }
+
+        function jumpTo(time) {
+            var sound = document.querySelector("#sound");
+            sound.currentTime = time;
+        }
+
+    </script>
+    <div id="overlay" class="show hide">
+        <div id="request-press-play">
+            <button onclick="playNow()">
+                Start Audio Playback<br>(needs user interaction)
+            </button>
+        </div>
+    </div>
+    <div id="card">
+        <!-- All you need to put beautiful, interactive 3D content on your site: -->
+        <model-viewer
+            src="https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2Fmodel.glb?sound=https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2FPenguin_Emperor_Unisex_Adult.ogg&amp;link=https://prefrontalcortex.de"
+            ios-src="https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2FPinguinRealComp.reality?v=1580297181648"
+            alt="A 3D model of a penguin" background-color="#70BCD1" shadow-intensity="1" camera-controls=""
+            interaction-prompt="auto" auto-rotate="" autoplay="" ar="" magic-leap="" id="model-viewer"
+            data-js-focus-visible="" ar-status="not-presenting">
+        </model-viewer>
+        <section class="attribution">
+            <div>
+                <span>
+                    <h1>Cute Penguin</h1>
+                    <span><audio controls="" autoplay="" loop="" id="sound">
+                            <source
+                                src="https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2FPenguin_Emperor_Unisex_Adult.mp3?v=1580308441912"
+                                type="audio/mpeg">
+                            <source
+                                src="https://cdn.glitch.com/7d7e8236-5fa5-4809-ab74-eb6bf2bef1c6%2FPenguin_Emperor_Unisex_Adult.ogg?v=1580245082333"
+                                type="audio/ogg"></audio></span>
+                </span>
+            </div>
+            <div id="timesteps">
+                <button onclick="jumpTo(0)">0s</button>
+                <button onclick="jumpTo(5)">5s</button>
+                <button onclick="jumpTo(10)">10s</button>
+                <button onclick="jumpTo(15)">15s</button>
+                <button onclick="jumpTo(20)">20s</button>
+            </div>
+        </section>
+
+        <script>
+            window.addEventListener("load", () => {
+                Sync("#model-viewer", "#sound");
+            });
+        </script>
+    </div>
+    <!-- Use it like any other HTML element
+    <model-viewer src="shared-assets/models/Astronaut.glb" auto-rotate camera-controls></model-viewer>
+    <model-viewer src="shared-assets/models/alligator.glb" camera-controls autoplay ar shadow-intensity="1"> -->
+    </model-viewer>
     <!-- Import the component -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
-
-    <!-- Use it like any other HTML element -->
-    <model-viewer src="shared-assets/models/Astronaut.glb" auto-rotate camera-controls></model-viewer>
-    <model-viewer src="shared-assets/models/alligator.glb" camera-controls autoplay ar shadow-intensity="1">
-    </model-viewer>
 </body>
 
 </html>
