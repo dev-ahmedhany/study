@@ -58,7 +58,10 @@
                 if (modelViewer === undefined)
                     modelViewer = document.querySelector(selector);
 
-                if (sound.paused) modelViewer.currentTime = sound.currentTime;
+                if (sound.paused) {
+                    modelViewer.pause();
+                    modelViewer.currentTime = sound.currentTime;
+                }
 
                 // need to enforce play
                 if (modelViewer.paused && typeof modelViewer.play === "function")
