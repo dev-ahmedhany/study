@@ -55,7 +55,7 @@
                     modelViewer = document.querySelector(selector);
 
                 // need to enforce play
-                if (modelViewer.paused && typeof modelViewer.play === "function")
+                if (!sound.paused && modelViewer.paused && typeof modelViewer.play === "function")
                     modelViewer.play();
 
                 requestAnimationFrame(enforceTime);
