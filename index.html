@@ -37,17 +37,17 @@
                 }
             });
 
-            var promise = sound.play();
-            if (promise !== undefined) {
-                promise
-                    .then(_ => {
-                        playRequest.classList.add("hide");
-                    })
-                    .catch(error => {
-                        // show the modal dialogue to play this
-                        playRequest.classList.remove("hide");
-                    });
-            }
+            // var promise = sound.play();
+            // if (promise !== undefined) {
+            //     promise
+            //         .then(_ => {
+            //             playRequest.classList.add("hide");
+            //         })
+            //         .catch(error => {
+            //             // show the modal dialogue to play this
+            //             playRequest.classList.remove("hide");
+            //         });
+            // }
 
             // this is needed because modelViewer.currentTime does not update when paused
             // https://github.com/google/model-viewer/issues/1113
